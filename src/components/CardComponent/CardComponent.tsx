@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react'
-import { StoreContext } from '../../stores/StoreProvider';
+import React, { useEffect, useRef } from 'react'
 import { Character } from '../../interfaces/ListInterface';
 import { Card } from 'antd';
 import './CardComponent.css';
@@ -11,7 +10,6 @@ interface Props {
 
 function CardComponent({ character }: Props) {
 
-  const [listState, dispatchState] = useContext(StoreContext);
   const isMounted = useRef(true);
 
   useEffect(() => {

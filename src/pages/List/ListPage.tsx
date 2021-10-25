@@ -6,6 +6,7 @@ import { ActionTypes } from "../../stores/StoreReducer";
 import PaginationComponent from "../../components/PaginationComponent/PaginationComponent";
 import CardComponent from "../../components/CardComponent/CardComponent";
 import { Col, Row } from "antd";
+import WithHeader from "../../hocs/WithHeader";
 
 const ListPage = () => {
   const [listState, dispatchState] = useContext(StoreContext);
@@ -50,7 +51,7 @@ const ListPage = () => {
     dispatchState({ type: ActionTypes.RESTAR, payload: { cantidad: 1, id: id } });
   }
   return (
-    <>
+    <WithHeader>
       <PaginationComponent></PaginationComponent>
       <Row>
         {listState.results?.map((element: Character) => (
@@ -59,7 +60,7 @@ const ListPage = () => {
           </Col>
         ))}
       </Row>
-    </>
+    </WithHeader>
   )
 }
 
