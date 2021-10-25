@@ -4,23 +4,26 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import HomePage from './pages/Home/HomePage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
 import ListPage from './pages/List/ListPage';
+import StoreProvider from './stores/StoreProvider';
 
 function App() {
   const [isLoggedIn] = useState(true);
   return (
     <div className="App">
-      <Router>
-        <Switch>
-          <Route path="/home" component={HomePage} />
-          <Route exact path="/list" component={ListPage} />
-          <Route exact path="/">
-            <>
-              {!isLoggedIn && <Redirect to={"/login"} />}
-            </>
-          </Route>
-          <Route path="*" component={NotFoundPage} />
-        </Switch>
-      </Router>
+      <StoreProvider>
+        <Router>
+          <Switch>
+            <Route path="/home" component={HomePage} />
+            <Route exact path="/list" component={ListPage} />
+            <Route exact path="/">
+              <>
+                {!isLoggedIn && <Redirect to={"/login"} />}
+              </>
+            </Route>
+            <Route path="*" component={NotFoundPage} />
+          </Switch>
+        </Router>
+      </StoreProvider>
     </div>
   );
 }
