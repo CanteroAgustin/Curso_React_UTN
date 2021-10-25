@@ -1,6 +1,6 @@
 import { Character, CharacterList } from "../interfaces/ListInterface";
 
-const initialState: CharacterList = { results: [{ id: 0, likes: 0, dislikes: 0 }] };
+const initialState: CharacterList = { results: [{ id: 0, like: false }] };
 
 enum ActionTypes {
   SET_LIST,
@@ -14,18 +14,7 @@ const storeReducer = (state: CharacterList, action: { type: ActionTypes; payload
     case ActionTypes.SET_LIST:
       return action.payload;
     case ActionTypes.ADD:
-      if (!state.results[index].likes) {
-        state.results[index].likes = 0;
-      }
-      console.log(state.results[index].likes, action.payload.cantidad);
-      state.results[index].likes = state.results[index].likes + action.payload.cantidad;
-      console.log(state.results[index].likes);
-      return { ...state };
-    case ActionTypes.RESTAR:
-      if (!state.results[index].dislikes) {
-        state.results[index].dislikes = 0;
-      }
-      state.results[index].dislikes++;
+      state.results[index].like = action.payload.like;
       return { ...state };
     default:
       return state;

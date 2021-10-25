@@ -11,8 +11,6 @@ export interface CharacterList {
 
 export interface Character {
   id: number;
-  likes: number;
-  dislikes: number;
   page?: number;
   name?: string;
   status?: string;
@@ -31,4 +29,5 @@ export interface Character {
   episode?: string[];
   url?: string;
   created?: string;
+  like?: boolean;
 }
