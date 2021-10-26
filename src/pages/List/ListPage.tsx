@@ -7,6 +7,8 @@ import PaginationComponent from "../../components/PaginationComponent/Pagination
 import CardComponent from "../../components/CardComponent/CardComponent";
 import { Col, Row } from "antd";
 import WithHeader from "../../hocs/WithHeader";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../services/Firebase";
 
 const ListPage = () => {
   const [listState, dispatchState] = useContext(StoreContext);
@@ -22,7 +24,7 @@ const ListPage = () => {
   useEffect(() => {
     if (!listState.page) {
       CustomService.getCharacter()
-        .then((data: any) => {
+        .then(async (data: any) => {
           if (isMounted.current) {
             //De esta forma podemos generar el memory leak 
             //al solicitar el servicio y desmontar el componente 
@@ -31,7 +33,15 @@ const ListPage = () => {
             //setTimeout(() => {
             //setTickers(data);
             //}, 3000);
-            data.page = 1;
+            const docRef = doc(db, "base", "datos");
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+              data.page = docSnap.data().page;
+            } else {
+              data.page = 1;
+            }
+
             dispatchState({ type: ActionTypes.SET_LIST, payload: data });
           } else {
             //console.log("Ya no estoy en el DOM");

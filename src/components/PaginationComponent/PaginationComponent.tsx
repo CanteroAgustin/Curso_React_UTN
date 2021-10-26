@@ -4,6 +4,9 @@ import * as CustomService from "../../services/CustomService";
 import { ActionTypes } from '../../stores/StoreReducer';
 import './PaginationComponent.css';
 import { Pagination } from 'antd';
+import { doc, setDoc, Timestamp } from "firebase/firestore";
+import { db } from '../../services/Firebase';
+
 interface Props {
 
 }
@@ -19,9 +22,13 @@ function PaginationComponent(props: Props) {
     })
   }, [])
 
-  const changePage = (p: any) => {
+  const changePage = async (p: any) => {
     let page = listState.page;
     page = p;
+    const docData = {
+      page
+    };
+    await setDoc(doc(db, "base", "datos"), docData);
     CustomService.getPage(page)
       .then((data: any) => {
         if (isMounted.current) {
@@ -33,7 +40,7 @@ function PaginationComponent(props: Props) {
 
   return (
     <div className="container">
-      <Pagination defaultCurrent={1} pageSize={20} showSizeChanger={false} total={671} onChange={data => changePage(data)}></Pagination>
+      <Pagination defaultCurrent={1} current={listState.page} pageSize={20} showSizeChanger={false} total={671} onChange={data => changePage(data)}></Pagination>
     </div >
   )
 }
