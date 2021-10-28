@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef } from 'react'
 import { Character } from '../../interfaces/ListInterface';
 import { Card } from 'antd';
 import { StarFilled, StarOutlined } from '@ant-design/icons';
-import './CardComponent.css';
+import './Card.module.css';
 import { StoreContext } from '../../stores/StoreProvider';
 import { ActionTypes } from '../../stores/StoreReducer';
 

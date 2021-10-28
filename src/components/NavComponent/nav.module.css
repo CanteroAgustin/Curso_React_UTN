@@ -1,0 +1,22 @@
+nav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: white;
+  color: white;
+  padding: 1%;
+}
+
+.navItem {
+  width: 5%;
+  color: white;
+  justify-content: flex-end;
+  align-items: flex-end;
+  list-style-type: none;
+}
+
+.logo{
+  margin-right: 22%;
+  display: block;
+  height: 120px;
+}

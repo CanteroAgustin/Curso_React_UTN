@@ -1,15 +1,14 @@
-import React, { ReactNode } from 'react';
-import logo from '../assets/logo.png';
+import { ReactNode } from 'react';
+import Nav from '../components/NavComponent/NavComponent';
 
 interface Props {
   children: ReactNode;
 }
 
 function WithHeader({ children }: Props) {
-
   return (
     <>
-      <img style={{ width: '30%', margin: 'auto', display: 'block' }} src={logo} alt="logo" />
+      <Nav />
       <div>{children}</div>
     </>
   )
