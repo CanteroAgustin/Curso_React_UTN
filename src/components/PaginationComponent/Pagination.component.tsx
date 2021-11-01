@@ -5,11 +5,7 @@ import { ActionTypes } from '../../stores/StoreReducer';
 import styles from './Pagination.module.css';
 import { Pagination } from 'antd';
 
-interface Props {
-
-}
-
-function PaginationComponent(props: Props) {
+function PaginationComponent() {
 
   const [listState, dispatchState] = useContext(StoreContext);
   const isMounted = useRef(true);
