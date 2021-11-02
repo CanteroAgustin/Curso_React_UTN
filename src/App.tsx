@@ -1,4 +1,4 @@
-import './App.css';
+import styles from './App.module.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import NotFoundPage from './pages/NotFound/NotFoundPage';
 import ListPage from './pages/List/ListPage';
@@ -10,7 +10,7 @@ import FavsPage from './pages/Favs/FavsPage';
 
 function App() {
   return (
-    <div className="App">
+    <div className={styles.App}>
       <StoreProvider>
         <Router>
           <WithHeader>
