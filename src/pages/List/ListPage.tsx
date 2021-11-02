@@ -8,12 +8,15 @@ import CardComponent from "../../components/CardComponent/Card.component";
 import { Col, Row } from "antd";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../services/Firebase";
+import { useMediaQuery } from 'react-responsive';
+import styles from "../List/ListPage.module.css";
 
 const ListPage = () => {
   const [listState, dispatchState] = useContext(StoreContext);
   let page = Number(localStorage.getItem("page"));
   const isMounted = useRef(true);
   const [, , user] = useContext(StoreContext);
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 600px)' })
 
   useEffect(() => {
     return (() => {
@@ -64,16 +67,21 @@ const ListPage = () => {
   }, [dispatchState, listState.page, page, user]);
 
   return (
-    <>
+    <div className={styles.container}>
       <PaginationComponent></PaginationComponent>
-      <Row>
+      {!isTabletOrMobile && <Row>
         {listState.results?.map((element: Character) => (
           <Col span={4} key={element.id}>
             <CardComponent character={element}></CardComponent>
           </Col>
         ))}
-      </Row>
-    </>
+      </Row>}
+      {isTabletOrMobile && <div>
+        {listState.results?.map((element: Character) => (
+          <CardComponent character={element}></CardComponent>
+        ))}
+      </div>}
+    </div>
   )
 }
 

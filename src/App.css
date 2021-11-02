@@ -1,11 +1,6 @@
-.coin-list-element {
-  width: 50vw;
-  list-style-type: none;
-  align-items: center;
-  justify-content: center;
-  margin: 10px;
-  border: 1px solid grey;
-  border-radius: 20px;
-  padding: 40px;
-  margin: auto;
+  @media (max-width: 600px) {
+  .App{
+  padding: 20px;
+  padding-top: 5px;
+  }
 }

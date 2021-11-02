@@ -5,8 +5,9 @@ import { StarFilled, StarOutlined } from '@ant-design/icons';
 import './Card.module.css';
 import { StoreContext } from '../../stores/StoreProvider';
 import { ActionTypes } from '../../stores/StoreReducer';
-import { doc, setDoc, collection, getDoc, query, getDocs, where, DocumentData } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from '../../services/Firebase';
+import styles from '../CardComponent/Card.module.css'
 
 const { Meta } = Card;
 
@@ -17,7 +18,7 @@ interface Props {
 function CardComponent({ character }: Props) {
 
   const isMounted = useRef(true);
-  const [listState, dispatchState] = useContext(StoreContext);
+  const [, dispatchState] = useContext(StoreContext);
   const [, , user] = useContext(StoreContext);
 
   useEffect(() => {
@@ -58,22 +59,6 @@ function CardComponent({ character }: Props) {
         }
       );
     }
-
-    // if (character.like) {
-    //   await setDoc(doc(db, "favs", user.uid),
-    //     {
-    //       favs: [...data]
-    //     }
-    //   );
-    // } else {
-    //   await setDoc(doc(db, "favs", user.uid), {
-    //     favs: [{
-    //       ...character,
-    //       like: true
-    //     }]
-    //   });
-    // }
-
     dispatchState({ type: ActionTypes.ADD, payload: { id: character.id, like: character.like ? !character.like : true } });
   }
 
@@ -89,7 +74,8 @@ function CardComponent({ character }: Props) {
     <Card
       hoverable
       bordered
-      style={{ width: 240, borderRadius: 10, marginLeft: 30, marginBottom: 20 }}
+      className={styles.card}
+      //style={{ width: 240, borderRadius: 10, marginLeft: 30, marginBottom: 20 }}
       cover={<img alt="example" style={{ borderTopLeftRadius: 10, borderTopRightRadius: 10 }} src={character.image} />}
       actions={[showFavs()]}
       bodyStyle={{ padding: 0 }}

@@ -16,7 +16,34 @@ nav {
 }
 
 .logo{
-  margin-right: 22%;
-  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
   height: 120px;
+  position: absolute;
+  top: 10px;
+}
+
+.avatar{
+  display: block;
+  margin: 0 0 0 auto;
+}
+
+@media (max-width: 600px) {
+  .logo{
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    height: 60px;
+  }
+  nav{
+    width: fit-content;
+  }
+  .avatar{
+    position: absolute;
+    right: 10px;
+  }
 }

@@ -7,16 +7,19 @@ import avatar from '../../assets/avatar.png';
 import { getAuth } from '@firebase/auth';
 import { StoreContext } from '../../stores/StoreProvider';
 import logo from '../../assets/logo1.png';
+import { useMediaQuery } from 'react-responsive';
 
 const auth = getAuth();
 
 function Nav() {
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 600px)' })
   const [, , user] = useContext(StoreContext);
   const location = useLocation();
   const history = useHistory();
 
   const signOut = async () => {
     await auth.signOut().then(() => console.log('user logged out'));
+    localStorage.removeItem("page");
     history.push('/');
   };
 
@@ -40,7 +43,8 @@ function Nav() {
         {user && <li className={styles.navItem}>
           <Dropdown overlay={menu}>
             <Avatar
-              style={{ display: 'block', margin: '0 0 0 auto' }} size={64}
+              className={styles.avatar}
+              size={isTabletOrMobile ? 48 : 64}
               src={
                 <Image
                   src={avatar}
