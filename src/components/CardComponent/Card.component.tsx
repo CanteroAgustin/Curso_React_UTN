@@ -8,6 +8,7 @@ import { ActionTypes } from '../../stores/StoreReducer';
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from '../../services/Firebase';
 import styles from '../CardComponent/Card.module.css'
+import { Link } from 'react-router-dom';
 
 const { Meta } = Card;
 
@@ -75,14 +76,13 @@ function CardComponent({ character }: Props) {
       hoverable
       bordered
       className={styles.card}
-      //style={{ width: 240, borderRadius: 10, marginLeft: 30, marginBottom: 20 }}
       cover={<img alt="example" style={{ borderTopLeftRadius: 10, borderTopRightRadius: 10 }} src={character.image} />}
       actions={[showFavs()]}
-      bodyStyle={{ padding: 0 }}
-    >
-      <Meta title={character.name} style={{ textAlign: 'center', padding: 10 }} />
-    </Card>
-
+      bodyStyle={{ padding: 0 }}>
+      <Meta title={<Link to={`/list/${character.id}`}>
+        {character.name}
+      </Link>} style={{ textAlign: 'center', padding: 10 }} />
+    </Card >
   )
 }
 

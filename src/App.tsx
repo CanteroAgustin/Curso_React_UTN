@@ -7,6 +7,7 @@ import SignUpPage from './pages/SignUp/SignUpPage.component';
 import LoginPage from './pages/Login/LoginPage.component';
 import WithHeader from './hocs/WithHeader';
 import FavsPage from './pages/Favs/FavsPage';
+import DetailPage from './pages/Detail/DetailPage';
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
         <Router>
           <WithHeader>
             <Switch>
-              <Route exact path="/" component={ListPage} />
+              <Route exact path="/list" component={ListPage} />
+              <Route path="/list/:id" component={DetailPage} />
               <Route exact path="/login" component={LoginPage} />
               <Route exact path="/signUp" component={SignUpPage} />
               <Route exact path="/favs" component={FavsPage} />
