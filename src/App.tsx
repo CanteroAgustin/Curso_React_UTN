@@ -1,5 +1,5 @@
 import styles from './App.module.css';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import NotFoundPage from './pages/NotFound/NotFoundPage';
 import ListPage from './pages/List/ListPage';
 import StoreProvider from './stores/StoreProvider';
@@ -16,7 +16,10 @@ function App() {
         <Router>
           <WithHeader>
             <Switch>
-              <Route exact path="/list" component={ListPage} />
+              <Route exact path="/" >
+                <Redirect to="/list" />
+              </Route>
+              <Route path="/list" component={ListPage} />
               <Route path="/list/:id" component={DetailPage} />
               <Route exact path="/login" component={LoginPage} />
               <Route exact path="/signUp" component={SignUpPage} />

@@ -15,7 +15,7 @@ const DetailPage = () => {
       }).catch(err => {
         setDetail(undefined);
       })
-  }, [])
+  }, [id])
 
   return (
     <>
