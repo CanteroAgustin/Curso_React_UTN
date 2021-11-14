@@ -3,7 +3,7 @@ import { Character } from '../../interfaces/ListInterface';
 import { Card } from 'antd';
 import { StarFilled, StarOutlined } from '@ant-design/icons';
 import { StoreContext } from '../../stores/StoreProvider';
-import { ActionTypes } from '../../stores/StoreReducer';
+import { ActionTypes } from '../../stores/FavReducer';
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from '../../services/Firebase';
 import styles from './FavCard.module.css'
@@ -18,8 +18,7 @@ interface Props {
 function FavCardComponent({ character }: Props) {
 
   const isMounted = useRef(true);
-  const [, dispatchState] = useContext(StoreContext);
-  const [, , user] = useContext(StoreContext);
+  const [, , user, , favDispatch] = useContext(StoreContext);
 
   useEffect(() => {
     return (() => {
@@ -58,7 +57,14 @@ function FavCardComponent({ character }: Props) {
         }
       );
     }
-    dispatchState({ type: ActionTypes.ADD, payload: { id: character.id, like: character.like ? !character.like : true } });
+    const newDocument = await (await getDoc(favsRef)).data();
+    if (newDocument) {
+      const docFiltered = newDocument.favs.filter((data: Character) => {
+        return data.like === true;
+      });
+      favDispatch({ type: ActionTypes.SET_FAV_LIST, payload: docFiltered });
+    }
+
   }
 
   const showFavs = () => {

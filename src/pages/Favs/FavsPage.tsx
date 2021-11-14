@@ -5,12 +5,12 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../services/Firebase";
 import { StoreContext } from '../../stores/StoreProvider';
 import { Character } from '../../interfaces/ListInterface';
+import { ActionTypes } from '../../stores/FavReducer';
 
 const FavsPage = () => {
-  const [favs, setFavs] = useState<Character[]>([]);
+  const [, setFavs] = useState<Character[]>([]);
   const isMounted = useRef(true);
-  const [, , user] = useContext(StoreContext);
-
+  const [, , user, favStore, favDispatch] = useContext(StoreContext);
   useEffect(() => {
     return (() => {
       isMounted.current = false;
@@ -28,13 +28,14 @@ const FavsPage = () => {
         }
       });
       setFavs(temp);
+      favDispatch({ type: ActionTypes.SET_FAV_LIST, payload: temp });
     })
-  }, [user.uid]);
+  }, [favDispatch, user.uid]);
 
   return (
     <>
       <Row>
-        {favs.map((element: any) => (
+        {favStore.map((element: any) => (
           <Col span={4} key={element.id}>
             <FavCardComponent character={element}></FavCardComponent>
           </Col>

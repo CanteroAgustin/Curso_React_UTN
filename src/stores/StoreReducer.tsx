@@ -5,7 +5,8 @@ const initialState: CharacterList = { results: [{ id: 0, like: false }] };
 enum ActionTypes {
   SET_LIST,
   ADD,
-  RESTAR
+  RESTAR,
+  SET_FAV
 }
 
 const storeReducer = (state: CharacterList, action: { type: ActionTypes; payload: Character | any }) => {

@@ -7,8 +7,8 @@ import { StoreContext } from '../../stores/StoreProvider';
 import { ActionTypes } from '../../stores/StoreReducer';
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from '../../services/Firebase';
-import styles from '../CardComponent/Card.module.css'
-import { Link } from 'react-router-dom';
+import styles from './Card.module.css'
+import { useHistory } from 'react-router-dom';
 
 const { Meta } = Card;
 
@@ -21,7 +21,7 @@ function CardComponent({ character }: Props) {
   const isMounted = useRef(true);
   const [, dispatchState] = useContext(StoreContext);
   const [, , user] = useContext(StoreContext);
-
+  const history = useHistory();
   useEffect(() => {
     return (() => {
       isMounted.current = false;
@@ -30,7 +30,6 @@ function CardComponent({ character }: Props) {
 
   const like = async (character: Character) => {
     const favsRef = doc(db, "favs", user.uid);
-    //const q = query(favsRef, where("like", "==", true));
     const document = await (await getDoc(favsRef)).data();
     if (document) {
       let encontrado = false;
@@ -73,15 +72,18 @@ function CardComponent({ character }: Props) {
 
   return (
     <Card
-      hoverable
       bordered
       className={styles.card}
-      cover={<img alt="example" style={{ borderTopLeftRadius: 10, borderTopRightRadius: 10 }} src={character.image} />}
+      cover={
+        <img
+          onClick={() => history.push(`/list/${character.id}`)}
+          alt="example"
+          className={styles.img}
+          src={character.image} />
+      }
       actions={[showFavs()]}
       bodyStyle={{ padding: 0 }}>
-      <Meta title={<Link to={`/list/${character.id}`}>
-        {character.name}
-      </Link>} style={{ textAlign: 'center', padding: 10 }} />
+      <Meta title={character.name} style={{ textAlign: 'center', padding: 10 }} />
     </Card >
   )
 }

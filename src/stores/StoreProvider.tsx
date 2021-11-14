@@ -1,6 +1,7 @@
 import { createContext, useEffect, useReducer, useState } from "react";
 import { auth } from "../services/Firebase";
 import storeReducer, { initialState } from "./StoreReducer";
+import favReducer, { favInitialState } from "./FavReducer";
 
 const StoreContext = createContext<any>(!null);
 
@@ -9,6 +10,7 @@ interface Props {
 }
 const StoreProvider = ({ children }: Props) => {
   const [store, dispatch] = useReducer(storeReducer, initialState);
+  const [favStore, favDispatch] = useReducer(favReducer, favInitialState);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -17,7 +19,7 @@ const StoreProvider = ({ children }: Props) => {
   }, [user]);
 
   return (
-    <StoreContext.Provider value={[store, dispatch, user]}>
+    <StoreContext.Provider value={[store, dispatch, user, favStore, favDispatch]}>
       {children}
     </StoreContext.Provider>
   )
