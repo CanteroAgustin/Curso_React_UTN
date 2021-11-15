@@ -22,14 +22,28 @@ const DetailPage = () => {
   useEffect(() => {
     setLoading(true);
     CustomService.getSpecificCharacter(id)
-      .then((data: any) => {
-        setDetail(data);
+      .then(async (data: any) => {
+        if (user) {
+          const favsRef = doc(db, "favs", user.uid);
+          const document = await (await getDoc(favsRef)).data();
+          if (document) {
+            document.favs.forEach((fav: Character) => {
+              if (fav.id.toString() === id.toString()) {
+                setDetail({ ...data, ...fav });
+              }
+            });
+          } else {
+            setDetail(data);
+          }
+        } else {
+          setDetail(data);
+        }
         setLoading(false);
       }).catch(err => {
         setDetail(undefined);
         setLoading(false);
       })
-  }, [id])
+  }, [id, user])
 
   const onFinish = async (data: any) => {
     setLoading(true);
