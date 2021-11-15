@@ -30,4 +30,6 @@ export interface Character {
   url?: string;
   created?: string;
   like?: boolean;
+  puntaje?: number;
+  descripcion?: string;
 }

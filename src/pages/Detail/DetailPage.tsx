@@ -1,29 +1,73 @@
 import { EditOutlined } from '@ant-design/icons';
-import { Descriptions, Divider } from "antd";
-import { useEffect, useState } from "react";
+import { Col, Divider, Rate, Row } from "antd";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Character } from "../../interfaces/ListInterface";
 import * as CustomService from "../../services/CustomService";
 import { Form, Input, Button } from 'antd';
 import styles from './DetailPage.module.css';
+import { StoreContext } from '../../stores/StoreProvider';
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from '../../services/Firebase';
+import { ActionTypes } from '../../stores/StoreReducer';
+import { Spin } from 'antd';
 
 const DetailPage = () => {
   const { id }: { id: string } = useParams();
   const [detail, setDetail] = useState<Character>();
   const [edit, setEdit] = useState(false);
+  const [, dispatchState, user] = useContext(StoreContext);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     CustomService.getSpecificCharacter(id)
       .then((data: any) => {
         setDetail(data);
-        console.log(data);
+        setLoading(false);
       }).catch(err => {
         setDetail(undefined);
+        setLoading(false);
       })
   }, [id])
 
-  const onFinish = async () => {
-
+  const onFinish = async (data: any) => {
+    setLoading(true);
+    const favsRef = doc(db, "favs", user.uid);
+    const document = await (await getDoc(favsRef)).data();
+    if (document) {
+      let encontrado = false;
+      document.favs.forEach((fav: Character) => {
+        if (fav.id === detail?.id) {
+          fav.puntaje = data.puntaje;
+          fav.descripcion = data.descripcion;
+          setDoc(doc(db, "favs", user.uid),
+            {
+              favs: [...document.favs]
+            }
+          );
+          encontrado = true;
+        }
+      });
+      if (!encontrado) {
+        document.favs.push({ ...detail, puntaje: data.puntaje, descripcion: data.descripcion });
+        await setDoc(doc(db, "favs", user.uid),
+          {
+            favs: [...document.favs]
+          }
+        );
+      }
+    } else {
+      await setDoc(doc(db, "favs", user.uid),
+        {
+          favs: [{ ...detail, puntaje: data.puntaje, descripcion: data.descripcion }]
+        }
+      );
+    }
+    setEdit(false);
+    setDetail({ ...detail, ...data });
+    dispatchState({ type: ActionTypes.ADD_DETAIL, payload: { id: detail?.id, puntaje: data.puntaje, descripcion: data.descripcion } });
+    setLoading(false);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -31,31 +75,37 @@ const DetailPage = () => {
   };
 
   return (
-    <div style={{ margin: 50 }}>
-      <img
-        style={{ margin: '0 auto', display: 'block', width: '20%', borderRadius: 10 }}
-        alt="imagen"
-        src={detail?.image}
-      />
-      <Descriptions
-        title="Informacion"
-        bordered
-        size='small'
-        column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
-        style={{ margin: "0 auto", width: '75%' }}
-      >
-        <Descriptions.Item label="Nombre">{detail?.name}</Descriptions.Item>
-        <Descriptions.Item label="Creación">{detail?.created}</Descriptions.Item>
-        <Descriptions.Item label="Genero">{detail?.gender}</Descriptions.Item>
-        <Descriptions.Item label="Origen">{detail?.origin?.name}</Descriptions.Item>
-        <Descriptions.Item label="Especie">{detail?.species}</Descriptions.Item>
-        <Descriptions.Item label="Estado">{detail?.status}</Descriptions.Item>
-      </Descriptions>
-      <Divider style={{ margin: "0 auto", padding: '20px 8% 20px 8%' }} orientation="left">
-        Agregar Informacion
+    <div className={styles.container}>
+      {loading ? <Spin /> :
+        <Row>
+          <Col>
+            <img
+              className={styles.img}
+              alt="imagen"
+              src={detail?.image}
+            />
+          </Col>
+          <Col className={styles.col2}>
+            <h2>Información</h2>
+            <p><strong>Nombre:</strong> {detail?.name}</p>
+            <p><strong>Creación:</strong> {detail?.created}</p>
+            <p><strong>Genero:</strong> {detail?.gender}</p>
+            <p><strong>Origen:</strong> {detail?.origin?.name}</p>
+            <p><strong>Especie:</strong> {detail?.species}</p>
+            <p><strong>Estado:</strong> {detail?.status}</p>
+          </Col>
+          {(detail?.puntaje || detail?.descripcion) && <Col className={styles.col3}>
+            <h2>Valoración</h2>
+            <p><strong>Puntaje:</strong> {detail?.puntaje}</p>
+            <p><strong>Detalle:</strong> {detail?.descripcion}</p>
+          </Col>}
+        </Row>}
+      {(user && !loading) && <Divider
+        orientation="left">
+        Agregar Valoracion
         <EditOutlined onClick={() => setEdit(!edit)} />
-      </Divider>
-      {edit && <Form
+      </Divider>}
+      {(edit && !loading) && <Form
         name="basic"
         labelCol={{
           span: 4,
@@ -64,7 +114,8 @@ const DetailPage = () => {
           span: 16,
         }}
         initialValues={{
-          remember: true,
+          email: user.email,
+          puntaje: 1
         }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
@@ -72,8 +123,17 @@ const DetailPage = () => {
         className={styles.form}
       >
         <Form.Item
-          label="comentarios"
-          name="comentarios"
+          label="email"
+          name="email"
+        >
+          <Input className={styles.email} readOnly />
+        </Form.Item>
+        <Form.Item name="puntaje" label="puntaje">
+          <Rate />
+        </Form.Item>
+        <Form.Item
+          label="Detalle"
+          name="descripcion"
           rules={[
             {
               required: true,

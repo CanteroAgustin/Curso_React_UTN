@@ -6,6 +6,7 @@ import { db } from "../../services/Firebase";
 import { StoreContext } from '../../stores/StoreProvider';
 import { Character } from '../../interfaces/ListInterface';
 import { ActionTypes } from '../../stores/FavReducer';
+import CardComponent from '../../components/CardComponent/Card.component';
 
 const FavsPage = () => {
   const [, setFavs] = useState<Character[]>([]);
@@ -37,7 +38,7 @@ const FavsPage = () => {
       <Row>
         {favStore.map((element: any) => (
           <Col span={4} key={element.id}>
-            <FavCardComponent character={element}></FavCardComponent>
+            <CardComponent character={element}></CardComponent>
           </Col>
         ))}
       </Row>

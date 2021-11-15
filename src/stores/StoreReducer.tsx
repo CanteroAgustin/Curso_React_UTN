@@ -6,7 +6,8 @@ enum ActionTypes {
   SET_LIST,
   ADD,
   RESTAR,
-  SET_FAV
+  SET_FAV,
+  ADD_DETAIL
 }
 
 const storeReducer = (state: CharacterList, action: { type: ActionTypes; payload: Character | any }) => {
@@ -16,6 +17,10 @@ const storeReducer = (state: CharacterList, action: { type: ActionTypes; payload
       return action.payload;
     case ActionTypes.ADD:
       state.results[index].like = action.payload.like;
+      return { ...state };
+    case ActionTypes.ADD_DETAIL:
+      state.results[index].descripcion = action.payload.descripcion;
+      state.results[index].puntaje = action.payload.puntaje;
       return { ...state };
     default:
       return state;

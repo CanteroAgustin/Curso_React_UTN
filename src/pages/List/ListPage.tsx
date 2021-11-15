@@ -1,4 +1,4 @@
-import { useEffect, useRef, useContext } from "react";
+import { useEffect, useRef, useContext, useState } from "react";
 import * as CustomService from "../../services/CustomService";
 import { Character } from "../../interfaces/ListInterface";
 import { StoreContext } from "../../stores/StoreProvider";
@@ -10,6 +10,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../services/Firebase";
 import { useMediaQuery } from 'react-responsive';
 import styles from "../List/ListPage.module.css";
+import { Spin } from 'antd';
 
 const ListPage = () => {
   const [listState, dispatchState] = useContext(StoreContext);
@@ -17,6 +18,7 @@ const ListPage = () => {
   const isMounted = useRef(true);
   const [, , user] = useContext(StoreContext);
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 600px)' })
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     return (() => {
@@ -26,6 +28,7 @@ const ListPage = () => {
 
   useEffect(() => {
     const getFavs = (data: any) => {
+      setLoading(true);
       const favsRef = doc(db, "favs", user.uid);
       getDoc(favsRef).then(res => {
         const favs = res.data();
@@ -37,9 +40,11 @@ const ListPage = () => {
           });
         });
         dispatchState({ type: ActionTypes.SET_LIST, payload: data });
+        setLoading(false);
       })
     };
     if (!page) {
+      setLoading(true);
       CustomService.getCharacter()
         .then(async (data: any) => {
           if (isMounted.current) {
@@ -48,10 +53,11 @@ const ListPage = () => {
             } else {
               dispatchState({ type: ActionTypes.SET_LIST, payload: data });
             }
-
           }
+          setLoading(false);
         });
     } else {
+      setLoading(true);
       CustomService.getPage(page)
         .then(async (data: any) => {
           if (isMounted.current) {
@@ -62,21 +68,23 @@ const ListPage = () => {
               dispatchState({ type: ActionTypes.SET_LIST, payload: data });
             }
           }
+          setLoading(false);
         })
     }
-  }, [dispatchState, listState.page, page, user]);
+  }, [dispatchState, listState.page, page, setLoading, user]);
 
   return (
     <div className={styles.container}>
       <PaginationComponent></PaginationComponent>
-      {!isTabletOrMobile && <Row>
+      {loading && <Spin />}
+      {(!isTabletOrMobile && !loading) && <Row>
         {listState.results?.map((element: Character) => (
           <Col span={4} key={element.id}>
             <CardComponent character={element}></CardComponent>
           </Col>
         ))}
       </Row>}
-      {isTabletOrMobile && <div>
+      {(isTabletOrMobile && !loading) && <div>
         {listState.results?.map((element: Character) => (
           <CardComponent character={element}></CardComponent>
         ))}

@@ -19,8 +19,7 @@ interface Props {
 function CardComponent({ character }: Props) {
 
   const isMounted = useRef(true);
-  const [, dispatchState] = useContext(StoreContext);
-  const [, , user] = useContext(StoreContext);
+  const [, dispatchState, user] = useContext(StoreContext);
   const history = useHistory();
   useEffect(() => {
     return (() => {

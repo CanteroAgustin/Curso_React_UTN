@@ -1,0 +1,21 @@
+.container{
+  text-align: center;
+  margin-left: 200px;
+  margin-right: 200px;
+  margin-top: 25px;
+  border: 1px solid black;
+}
+
+.col2{
+  padding: 2%;
+  text-align: left;
+}
+
+.col3{
+  padding: 2%;
+  text-align: left;
+}
+
+.form{
+  text-align: left;
+}

@@ -36,7 +36,7 @@ function Nav() {
   return (
     <>
       <nav>
-        {location.pathname !== '/login' && location.pathname !== '/signup' && <img className={styles.logo} src={logo} alt="logo" />}
+        {location.pathname !== '/login' && location.pathname !== '/signUp' && <img className={styles.logo} src={logo} alt="logo" />}
         {user && location.pathname !== '/favs' && <li className={styles.navItem}><NavLink to="/favs"><StarOutlined /> Favoritos</NavLink></li>}
         {location.pathname !== '/list' && <li className={styles.navItem}><NavLink to="/list"><HomeOutlined /> Home</NavLink></li>}
         {(location.pathname !== '/login' && !user) && <li className={styles.navItem}><NavLink to="/login">Ingresar</NavLink></li>}

@@ -5,6 +5,8 @@ import { Form, Input, Button } from 'antd';
 import { createUserWithEmailAndPassword } from '@firebase/auth';
 import { auth } from '../../services/Firebase';
 import { useHistory } from 'react-router';
+import { Spin } from 'antd';
+import { useState } from 'react';
 
 interface User {
   email: string,
@@ -22,8 +24,13 @@ const createAccount = async (email: string, password: string) => {
 };
 
 const SignUpPage = () => {
+  const [loading, setLoading] = useState(false);
   const onFinish = (values: User) => {
-    createAccount(values.email, values.password).then(() => history.push('/'));
+    setLoading(true);
+    createAccount(values.email, values.password).then(() => {
+      history.push('/');
+      setLoading(false);
+    });
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -31,68 +38,71 @@ const SignUpPage = () => {
   };
 
   const history = useHistory();
-  const goToLogin = () => history.push('/Login');
+  const goToLogin = () => {
+    history.replace('/login')
+  };
 
   return (
     <div className={styles.container}>
-      <Form
-        name="basic"
-        labelCol={{
-          span: 4,
-        }}
-        wrapperCol={{
-          span: 16,
-        }}
-        initialValues={{
-          remember: true,
-        }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-        className={styles.form}
-      >
-        <h1>REGISTRO</h1>
-        <Form.Item
-          label="Email"
-          name="email"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your email!',
-            },
-          ]}
-        >
-          <Input className={styles.email} />
-        </Form.Item>
-
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your password!',
-            },
-          ]}
-        >
-          <Input.Password className={styles.password} />
-        </Form.Item>
-
-        <Form.Item
+      {loading ? <Spin /> :
+        <Form
+          name="basic"
+          labelCol={{
+            span: 4,
+          }}
           wrapperCol={{
-            offset: 4,
             span: 16,
           }}
+          initialValues={{
+            remember: true,
+          }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+          className={styles.form}
         >
-          <Button type="primary" htmlType="submit">
-            Registrarme
-          </Button>
-          <h3>Ya tengo una cuenta,
-            <Button type="link" onClick={goToLogin}>
-              Ingresar
-            </Button></h3>
-        </Form.Item>
-      </Form>
+          <h1>REGISTRO</h1>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your email!',
+              },
+            ]}
+          >
+            <Input className={styles.email} />
+          </Form.Item>
+
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your password!',
+              },
+            ]}
+          >
+            <Input.Password className={styles.password} />
+          </Form.Item>
+
+          <Form.Item
+            wrapperCol={{
+              offset: 4,
+              span: 16,
+            }}
+          >
+            <Button type="primary" htmlType="submit">
+              Registrarme
+            </Button>
+            <h3>Ya tengo una cuenta,
+              <Button type="link" onClick={goToLogin}>
+                Ingresar
+              </Button></h3>
+          </Form.Item>
+        </Form>}
     </div>
   );
 };

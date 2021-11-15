@@ -5,6 +5,7 @@ nav {
   background-color: white;
   color: white;
   padding: 1%;
+  min-height: 150px;
 }
 
 .navItem {
