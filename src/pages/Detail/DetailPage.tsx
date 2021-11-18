@@ -1,5 +1,5 @@
 import { EditOutlined } from '@ant-design/icons';
-import { Col, Divider, Rate, Row } from "antd";
+import { Col, Divider, Rate } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Character } from "../../interfaces/ListInterface";
@@ -91,7 +91,7 @@ const DetailPage = () => {
   return (
     <div className={styles.container}>
       {loading ? <Spin /> :
-        <Row>
+        <div>
           <Col>
             <img
               className={styles.img}
@@ -113,7 +113,7 @@ const DetailPage = () => {
             <p><strong>Puntaje:</strong> {detail?.puntaje}</p>
             <p><strong>Detalle:</strong> {detail?.descripcion}</p>
           </Col>}
-        </Row>}
+        </div>}
       {(user && !loading) && <Divider
         orientation="left">
         Agregar Valoracion
@@ -137,12 +137,14 @@ const DetailPage = () => {
         className={styles.form}
       >
         <Form.Item
-          label="email"
+          label="Email"
           name="email"
         >
-          <Input className={styles.email} readOnly />
+          <Input className={styles.input} readOnly />
         </Form.Item>
-        <Form.Item name="puntaje" label="puntaje">
+        <Form.Item
+          name="puntaje"
+          label="Puntaje">
           <Rate />
         </Form.Item>
         <Form.Item
@@ -155,7 +157,7 @@ const DetailPage = () => {
             },
           ]}
         >
-          <Input className={styles.email} />
+          <Input className={styles.input} />
         </Form.Item>
         <Form.Item
           wrapperCol={{

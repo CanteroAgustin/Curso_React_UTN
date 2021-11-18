@@ -19,3 +19,34 @@
 .form{
   text-align: left;
 }
+
+@media (max-width: 600px) {
+  .container{
+    margin: 0 !important;
+  }
+  
+  .img{
+    width: 100%;
+    border: 1px solid black;
+  }
+
+  .form{
+    text-align: center;
+    justify-content: center;
+  }
+
+  .input{
+    width: 90%;
+  }
+  [title= "Email"]{
+    padding-left: 5%;
+  }
+
+  [title= "Puntaje"]{
+    padding-left: 5%;
+  }
+
+  [title= "Detalle"]{
+    padding-left: 5%;
+  }
+}
