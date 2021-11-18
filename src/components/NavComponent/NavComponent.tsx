@@ -47,9 +47,7 @@ function Nav() {
               className={styles.avatar}
               size={isTabletOrMobile ? 48 : 64}
               src={
-                <Image
-                  src={avatar}
-                />
+                avatar
               }
             />
           </Dropdown>
