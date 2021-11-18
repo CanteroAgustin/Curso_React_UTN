@@ -1,5 +1,4 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import FavCardComponent from "../../components/FavCardComponent/FavCard.component";
 import { Col, Row } from "antd";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../services/Firebase";
@@ -7,8 +6,11 @@ import { StoreContext } from '../../stores/StoreProvider';
 import { Character } from '../../interfaces/ListInterface';
 import { ActionTypes } from '../../stores/FavReducer';
 import CardComponent from '../../components/CardComponent/Card.component';
+import styles from './Favs.module.css'
+import { useMediaQuery } from 'react-responsive';
 
 const FavsPage = () => {
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 600px)' })
   const [, setFavs] = useState<Character[]>([]);
   const isMounted = useRef(true);
   const [, , user, favStore, favDispatch] = useContext(StoreContext);
@@ -34,15 +36,22 @@ const FavsPage = () => {
   }, [favDispatch, user.uid]);
 
   return (
-    <>
-      <Row>
+    <div className={styles.container}>
+      {!isTabletOrMobile ? <Row>
         {favStore.map((element: any) => (
           <Col span={4} key={element.id}>
             <CardComponent character={element}></CardComponent>
           </Col>
         ))}
       </Row>
-    </>
+        :
+        favStore.map((element: any) => (
+          <Col key={element.id}>
+            <CardComponent character={element}></CardComponent>
+          </Col>
+        ))
+      }
+    </div>
   )
 }
 

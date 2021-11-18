@@ -21,3 +21,29 @@
     margin: 0 auto;
     padding-top: 5%;
 }
+
+@media (max-width: 600px) {
+  .container{
+    width: fit-content;
+    padding-top: 1%;
+  }
+  .form{
+    width: fit-content;
+    margin: 20px;
+  }
+  .email{
+    width: 100%;
+  }
+  .password{
+    width: 100%;
+  }
+
+  [title="Email"] {
+    margin-left: 10px !important;
+  }
+
+  [title="Password"] {
+    margin-left: 10px !important;
+  }
+  
+}

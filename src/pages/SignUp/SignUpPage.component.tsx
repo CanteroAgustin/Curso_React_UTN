@@ -7,6 +7,7 @@ import { auth } from '../../services/Firebase';
 import { useHistory } from 'react-router';
 import { Spin } from 'antd';
 import { useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 
 interface User {
   email: string,
@@ -25,6 +26,9 @@ const createAccount = async (email: string, password: string) => {
 
 const SignUpPage = () => {
   const [loading, setLoading] = useState(false);
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 600px)' })
+  const offset = isTabletOrMobile ? 0 : 4;
+
   const onFinish = (values: User) => {
     setLoading(true);
     createAccount(values.email, values.password).then(() => {
@@ -90,7 +94,7 @@ const SignUpPage = () => {
 
           <Form.Item
             wrapperCol={{
-              offset: 4,
+              offset,
               span: 16,
             }}
           >

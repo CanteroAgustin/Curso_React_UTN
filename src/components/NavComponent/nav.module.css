@@ -36,15 +36,22 @@ nav {
     position: absolute;
     margin-left: auto;
     margin-right: auto;
-    left: 0;
-    right: 0;
-    height: 60px;
+    left: 0 !important;
+    right: 0 !important;
+    top: 10px !important;
+    height: 60px !important;
   }
   nav{
-    width: fit-content;
+    min-height: 50px !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+  }
+  .navItem{
+    margin-top: 70px !important;
   }
   .avatar{
-    position: absolute;
-    right: 10px;
+    position: absolute !important;
+    right: 10px !important;
+    top: 10px !important;
   }
 }

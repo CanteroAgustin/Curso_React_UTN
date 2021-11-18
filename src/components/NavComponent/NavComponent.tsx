@@ -41,7 +41,7 @@ function Nav() {
         {location.pathname !== '/list' && <li className={styles.navItem}><NavLink to="/list"><HomeOutlined /> Home</NavLink></li>}
         {(location.pathname !== '/login' && !user) && <li className={styles.navItem}><NavLink to="/login">Ingresar</NavLink></li>}
         {(location.pathname !== '/signUp' && !user) && <li className={styles.navItem}><NavLink to="/signUp">Registrarme</NavLink></li>}
-        {user && <li className={styles.navItem}>
+        {user && <li>
           <Dropdown overlay={menu}>
             <Avatar
               className={styles.avatar}
