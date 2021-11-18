@@ -11,6 +11,7 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from '../../services/Firebase';
 import { ActionTypes } from '../../stores/StoreReducer';
 import { Spin } from 'antd';
+import { useMediaQuery } from 'react-responsive';
 
 const DetailPage = () => {
   const { id }: { id: string } = useParams();
@@ -18,6 +19,8 @@ const DetailPage = () => {
   const [edit, setEdit] = useState(false);
   const [, dispatchState, user] = useContext(StoreContext);
   const [loading, setLoading] = useState(false);
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 600px)' })
+  const offset = isTabletOrMobile ? 0 : 4;
 
   useEffect(() => {
     setLoading(true);
@@ -161,7 +164,7 @@ const DetailPage = () => {
         </Form.Item>
         <Form.Item
           wrapperCol={{
-            offset: 4,
+            offset,
             span: 16,
           }}
         >

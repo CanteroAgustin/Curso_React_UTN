@@ -1,6 +1,6 @@
 import { HomeOutlined, StarOutlined } from '@ant-design/icons';
 import { getAuth } from '@firebase/auth';
-import { Avatar, Button, Dropdown, Image, Menu } from 'antd';
+import { Avatar, Button, Dropdown, Menu } from 'antd';
 import { useContext } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { NavLink, useHistory, useLocation } from 'react-router-dom';
